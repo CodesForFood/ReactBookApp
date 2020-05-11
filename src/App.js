@@ -44,14 +44,7 @@ class App extends React.Component {
 	_onBookChange(){  
 		let state = BookStore.getBookStore();		
         this.setState(state);     
-	}
-
-	_onPageChange(){
-
-	}
-	
-
-
+	}	
 }
 
 export default App;
