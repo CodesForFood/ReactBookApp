@@ -4,7 +4,8 @@ import {EventEmitter} from 'events';
 
 let bookStore = {
     bookList: [],
-  
+    currentPage: 1,
+    numPerPage: 10  
 }
 
 
@@ -20,7 +21,7 @@ class BookStoreClass extends EventEmitter {
 
     emitChange(){ this.emit("change"); }
 
-    getBookList() { return bookStore.bookList; }
+    getBookStore() { return bookStore; }
 
     filterBooks(bookList, option, searchTerm){
         let filteredBooks = [];
@@ -79,7 +80,7 @@ const BookStore = new BookStoreClass();
 
 Dispatcher.register( (action) => {
     switch (action.actionType){
-        case "all_books":
+        case "all_books":       
             bookStore.bookList = action.data;            
             BookStore.emitChange();
         break;
@@ -93,6 +94,21 @@ Dispatcher.register( (action) => {
         break;
         case "sortDesc":
             bookStore.bookList = BookStore.sortDesc(action.data, action.option);
+            BookStore.emitChange();
+        break;
+        case "changeNumPerPage":
+            bookStore.bookList = action.data;
+            bookStore.numPerPage = action.numPerPage; 
+            let numOfPages = Math.ceil(bookStore.bookList.length / bookStore.numPerPage);
+            if(bookStore.currentPage > numOfPages){
+                bookStore.currentPage = 1;
+            }
+
+            BookStore.emitChange();
+        break;
+        case "changePage":
+            bookStore.bookList = action.data;
+            bookStore.currentPage = action.page;
             BookStore.emitChange();
         break;
         default:

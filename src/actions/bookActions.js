@@ -4,7 +4,7 @@ import Axios from 'axios';
 const URL = "https://servicepros-test-api.herokuapp.com/api/v1/books";
 
 const BookActions = {
-    getAllBooks: () =>{
+    getAllBooks: () =>{      
         Axios.get(URL)
         .then((resp) => {
             const bookList = resp.data;
@@ -44,6 +44,20 @@ const BookActions = {
             actionType: "sortDesc",
             data: bookList,           
             option: option
+        });
+    },
+    changeNumPerPage: (bookList, numPerPage) => {
+        Dispatcher.dispatch({
+            actionType: "changeNumPerPage",
+            data: bookList,
+            numPerPage: numPerPage
+        });
+    },
+    changePage: (bookList, page) => {
+        Dispatcher.dispatch({
+            actionType: "changePage",
+            data: bookList,
+            page: page
         });
     }
 

@@ -10,13 +10,15 @@ class App extends React.Component {
 	constructor(props){
         super(props);
         this.state = {        
-			bookList: []
+			bookList: [],
+			currentPage: 1,
+			numPerPage: 10
         };
     }
 
   	render() {
 		return(
-			<div className="container">
+			<div className="container">			
 	  			<Header bookState={this.state} /> 
 				<BookTable bookState={this.state}/>
 			</div>	  
@@ -40,9 +42,14 @@ class App extends React.Component {
 	}
 
 	_onBookChange(){  
-		let bookList = BookStore.getBookList()
-        this.setState({bookList});     
-    }
+		let state = BookStore.getBookStore();		
+        this.setState(state);     
+	}
+
+	_onPageChange(){
+
+	}
+	
 
 
 }
