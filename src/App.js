@@ -1,26 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import BookStore from "./stores/bookStore";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from "./components/header";
+import BookTable from "./components/bookTable";
+
+
+class App extends React.Component {
+	constructor(props){
+        super(props);
+        this.state = {        
+			bookList: []
+        };
+    }
+
+  	render() {
+		return(
+			<div className="container">
+	  			<Header bookState={this.state} /> 
+				<BookTable bookState={this.state}/>
+			</div>	  
+		)
+	};
+
+	addBookListeners(){
+        BookStore.addBookListeners(this._onBookChange.bind(this));
+	}
+
+	removeBookListeners(){
+		BookStore.removeBookListeners(this._onBookChange.bind(this))
+	}
+
+	componentDidMount(){
+		this.addBookListeners();		  
+	}
+ 
+	componentWillUnmount(){
+		this.removeBookListeners(); 		    
+	}
+
+	_onBookChange(){  
+		let bookList = BookStore.getBookList()
+        this.setState({bookList});     
+    }
+
+
 }
 
 export default App;
